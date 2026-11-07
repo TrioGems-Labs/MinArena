@@ -38,33 +38,33 @@
     </section>
 
     <section class="section tests-section" id="tests">
-      <div class="section-heading"><div><div class="eyebrow"><span class="eyebrow-line"></span> CHOOSE YOUR CHALLENGE</div><h2>Where will your mind take you?</h2><p>Three experiences. Thirty questions each. A fresh challenge every time.</p></div><span class="section-count">01 <i>/</i> 03</span></div>
+      <div class="section-heading"><div><div class="eyebrow"><span class="eyebrow-line"></span> CHOOSE YOUR CHALLENGE</div><h2>Where will your mind take you?</h2><p>Three experiences. <span class="q-count">30</span> questions each. A fresh challenge every time.</p></div><span class="section-count">01 <i>/</i> 03</span></div>
       <div class="test-grid">
         <article class="test-card iq-card">
           <div class="card-topline"><span class="category-tag"><span class="tag-dot"></span> LOGIC & REASONING</span><span class="card-number">01</span></div>
           <div class="test-visual iq-visual"><div class="visual-grid"><i>△</i><i>○</i><i>□</i><i>◇</i><i>○</i><i>△</i><i>◇</i><i>□</i><i>?</i></div><span class="visual-orbit"></span></div>
           <h3>IQ & Brain Test</h3><p>Stretch your reasoning with patterns, sequences, visual logic and clever puzzles.</p>
-          <div class="card-meta"><span>◷ 20 min</span><span>◎ 30 questions</span><span class="level">Mixed level</span></div>
+          <div class="card-meta"><span data-time="iq">◷ 10 min</span><span>◎ <span class="q-count">30</span> questions</span><span class="level">Mixed level</span></div>
           <button class="btn btn-card" data-test="iq">Start IQ test <span>↗</span></button>
         </article>
         <article class="test-card personality-card">
           <div class="card-topline"><span class="category-tag"><span class="tag-dot"></span> YOU & YOUR STYLE</span><span class="card-number">02</span></div>
           <div class="test-visual personality-visual"><div class="personality-orb">✺</div><span class="personality-label label-a">CREATIVE</span><span class="personality-label label-b">THOUGHTFUL</span><span class="personality-label label-c">CURIOUS</span></div>
           <h3>Personality Test</h3><p>Discover your preferences, strengths and the way you approach everyday situations.</p>
-          <div class="card-meta"><span>◷ 10 min</span><span>◎ 30 questions</span><span class="level">Self-discovery</span></div>
+          <div class="card-meta"><span data-time="personality">◷ 10 min</span><span>◎ <span class="q-count">30</span> questions</span><span class="level">Self-discovery</span></div>
           <button class="btn btn-card" data-test="personality">Discover yourself <span>↗</span></button>
         </article>
         <article class="test-card gk-card">
           <div class="card-topline"><span class="category-tag"><span class="tag-dot"></span> KNOWLEDGE & CURIOSITY</span><span class="card-number">03</span></div>
           <div class="test-visual gk-visual"><div class="globe">◎<span>✦</span></div><div class="gk-orbit orbit-1"></div><div class="gk-orbit orbit-2"></div><b class="gk-chip">WORLD<br>FACTS</b></div>
           <h3>General Knowledge</h3><p>Take a tour through science, geography, history, technology, sports and more.</p>
-          <div class="card-meta"><span>◷ 15 min</span><span>◎ 30 questions</span><span class="level">Mixed level</span></div>
+          <div class="card-meta"><span data-time="gk">◷ 10 min</span><span>◎ <span class="q-count">30</span> questions</span><span class="level">Mixed level</span></div>
           <button class="btn btn-card" data-test="gk">Test your knowledge <span>↗</span></button>
         </article>
       </div>
     </section>
 
-    <section class="how-section" id="how"><div class="how-intro"><div class="eyebrow"><span class="eyebrow-line"></span> SIMPLE BY DESIGN</div><h2>Curiosity is the<br><span>only requirement.</span></h2><p>No sign-up. No pressure. Just a chance to learn something about yourself.</p></div><div class="steps"><div class="step"><span class="step-no">01</span><div><h3>Choose a test</h3><p>Pick the challenge that feels right for you.</p></div><span class="step-icon">⌁</span></div><div class="step"><span class="step-no">02</span><div><h3>Follow your curiosity</h3><p>Answer 30 randomly selected questions at your own pace.</p></div><span class="step-icon">✳</span></div><div class="step"><span class="step-no">03</span><div><h3>Explore your results</h3><p>See your score, review answers and discover insights.</p></div><span class="step-icon">↗</span></div></div></section>
+    <section class="how-section" id="how"><div class="how-intro"><div class="eyebrow"><span class="eyebrow-line"></span> SIMPLE BY DESIGN</div><h2>Curiosity is the<br><span>only requirement.</span></h2><p>No sign-up. No pressure. Just a chance to learn something about yourself.</p></div><div class="steps"><div class="step"><span class="step-no">01</span><div><h3>Choose a test</h3><p>Pick the challenge that feels right for you.</p></div><span class="step-icon">⌁</span></div><div class="step"><span class="step-no">02</span><div><h3>Follow your curiosity</h3><p>Answer <span class="q-count">30</span> randomly selected questions at your own pace.</p></div><span class="step-icon">✳</span></div><div class="step"><span class="step-no">03</span><div><h3>Explore your results</h3><p>See your score, review answers and discover insights.</p></div><span class="step-icon">↗</span></div></div></section>
     <section class="bottom-cta"><div><span class="eyebrow">READY WHEN YOU ARE</span><h2>Your next aha moment<br>could be one click away.</h2></div><a class="btn btn-primary" href="#tests">Find your challenge <span>↗</span></a></section>
   </main>
   <footer><a class="brand footer-brand" href="#home"><span class="brand-mark">M</span><span>mind<span class="brand-accent">arena</span></span></a><span>Made for curious minds. &copy; <span id="year"></span> MindArena</span><span class="footer-note">Explore responsibly • Have fun learning</span></footer>
@@ -73,13 +73,37 @@
   <section class="quiz-shell hidden" id="quizShell">
     <header class="quiz-header"><button class="back-btn" id="quitQuiz">← <span>Exit test</span></button><a class="brand" href="#" id="quizHome"><span class="brand-mark">M</span><span>mind<span class="brand-accent">arena</span></span></a><span class="quiz-type" id="quizType">IQ & BRAIN TEST</span></header>
     <div class="quiz-container">
-      <div class="quiz-heading"><div><span class="eyebrow" id="quizEyebrow">QUESTION 01 OF 30</span><h2 id="quizTitle">Let's warm up your brain.</h2></div><div class="timer-pill" id="timerPill">◷ <span id="timerText">20:00</span></div></div>
+      <div class="quiz-heading">
+        <span class="eyebrow" id="quizEyebrow">QUESTION 01 OF 30</span>
+        <div class="quiz-tools">
+          <div class="timer-pill" id="timerPill">◷ <span id="timerText">10:00</span></div>
+          <button class="btn btn-quiet" id="openMap" aria-label="View all questions">☷ <span>All questions</span></button>
+        </div>
+      </div>
       <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
-      <div class="quiz-content"><div class="question-panel"><div class="question-type" id="questionType">LOGIC & REASONING</div><h3 id="questionText"></h3><div id="questionVisual" class="question-visual"></div><div id="options" class="options-grid"></div><div class="quiz-controls"><button class="btn btn-quiet" id="prevQuestion">← Previous</button><span class="autosave-note">Your progress is saved on this device</span><button class="btn btn-primary" id="nextQuestion">Next question <span>→</span></button></div></div><aside class="question-aside"><div class="aside-card"><span class="aside-kicker">YOUR PROGRESS</span><div class="progress-number"><strong id="answeredCount">0</strong><span> / 30 answered</span></div><div class="mini-progress"><div id="miniProgressFill"></div></div><p>Take your time. You can move back and change your answers before submitting.</p></div><div class="question-map-card"><span class="aside-kicker">QUESTION MAP</span><div id="questionMap" class="question-map"></div><div class="map-legend"><span><i class="legend-current"></i> Current</span><span><i class="legend-done"></i> Answered</span></div></div></aside></div>
-      <div class="submit-row"><span id="unansweredText">30 questions remaining</span><button class="submit-btn" id="submitQuiz">Submit test <span>↗</span></button></div>
+      <div class="question-panel">
+        <h3 id="questionText"></h3>
+        <div id="questionVisual" class="question-visual"></div>
+        <div id="options" class="options-grid"></div>
+        <div class="quiz-controls">
+          <button class="btn btn-quiet" id="prevQuestion">← Previous</button>
+          <button class="btn btn-primary" id="nextQuestion">Next <span>→</span></button>
+        </div>
+      </div>
     </div>
   </section>
 
+  <div class="map-modal hidden" id="mapModal">
+    <div class="map-box" role="dialog" aria-modal="true" aria-labelledby="mapTitle">
+      <div class="map-head">
+        <div><span class="aside-kicker">ALL QUESTIONS</span><h3 id="mapTitle"><span id="answeredCount">0</span> of <span class="q-count">30</span> answered</h3></div>
+        <button class="icon-btn map-close" id="closeMap" aria-label="Close">×</button>
+      </div>
+      <div id="questionMap" class="question-map"></div>
+      <div class="map-legend"><span><i class="legend-current"></i> Current</span><span><i class="legend-done"></i> Answered</span></div>
+      <button class="submit-btn" id="submitQuiz">Submit test <span>↗</span></button>
+    </div>
+  </div>
   <section class="result-shell hidden" id="resultShell">
     <header class="quiz-header"><a class="brand" href="#" id="resultHome"><span class="brand-mark">M</span><span>mind<span class="brand-accent">arena</span></span></a><span class="quiz-type">YOUR RESULTS</span></header>
     <div class="result-container"><div class="result-top"><span class="eyebrow">THAT'S A WRAP</span><h1 id="resultTitle">Nicely done.</h1><p id="resultSubtitle">Here's how your challenge went.</p></div><div class="result-main"><div class="score-card"><span class="aside-kicker" id="scoreLabel">YOUR SCORE</span><div class="score-ring" id="scoreRing"><div><strong id="scoreValue">80</strong><span id="scoreSuffix">%</span></div></div><h3 id="scoreCaption">Great work!</h3><p id="scoreDescription">You did a great job.</p></div><div class="stats-grid"><div class="stat-card"><span>✓</span><strong id="correctStat">24</strong><small>Correct answers</small></div><div class="stat-card"><span>×</span><strong id="wrongStat">6</strong><small>Incorrect answers</small></div><div class="stat-card"><span>◷</span><strong id="timeStat">12:34</strong><small>Time taken</small></div><div class="stat-card"><span>◎</span><strong id="answeredStat">30/30</strong><small>Answered</small></div></div></div><div class="personality-result hidden" id="personalityResult"><span class="aside-kicker">YOUR PERSONALITY SNAPSHOT</span><h2 id="personalityType">The Curious Explorer</h2><p id="personalityDescription"></p><div id="traitBars" class="trait-bars"></div></div><div class="review-heading"><div><span class="eyebrow">LEARN AS YOU GO</span><h2>Answer review</h2></div><button class="btn btn-quiet" id="retakeBtn">↻ Retake test</button></div><div id="reviewList" class="review-list"></div><div class="result-footer"><button class="btn btn-primary" id="homeBtn">Back to home <span>↗</span></button><button class="btn btn-outline" id="shareBtn">Share result ↗</button></div></div>

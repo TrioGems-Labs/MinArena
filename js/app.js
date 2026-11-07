@@ -2,12 +2,15 @@
   const $ = id => document.getElementById(id);
   const state = { test:null, questions:[], answers:{}, index:0, started:0, timer:null, seconds:0, duration:0 };
   const labels = {iq:"IQ & BRAIN TEST", personality:"PERSONALITY TEST", gk:"GENERAL KNOWLEDGE"};
-  const titles = {iq:"Let's warm up your brain.",personality:"There are no right or wrong answers.",gk:"Let's see what you know."};
-  const intros = {iq:"LOGIC & REASONING",personality:"YOUR PREFERENCES",gk:"GENERAL KNOWLEDGE"};
-  const PER_TEST = 30;
+  const PER_TEST = 30; // questions per test
+  // Time allowed per question; total time = PER_TEST × this. Personality is untimed; its value is only the estimate shown on the card.
+  const SECONDS_PER_QUESTION = {iq:20, gk:20, personality:20}; // 30 × 20s = 10 min
+  const TIMED = {iq:true, gk:true, personality:false};
+  const durationOf = test => PER_TEST*SECONDS_PER_QUESTION[test];
+  const minutesLabel = sec => { const m=sec/60; return (Number.isInteger(m)?m:m.toFixed(1))+" min"; };
   // Fisher–Yates: every order is equally likely
   const shuffle = arr => { const a=[...arr]; for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]} return a; };
-  // Pick 30 random questions from the bank. Personality picks evenly from each trait so the report stays balanced.
+  // Pick PER_TEST random questions from the bank. Personality picks evenly from each trait so the report stays balanced.
   function pickQuestions(test){
     const bank=QUESTION_BANKS[test];
     if(test!=="personality") return shuffle(bank).slice(0,PER_TEST);
@@ -28,49 +31,58 @@
       else copy.answer=order.indexOf(q.answer);
       return copy;
     });
-    state.answers={};state.index=0;state.started=Date.now();state.seconds=0;state.duration=test==="iq"?20*60:test==="gk"?15*60:10*60;
-    $("quizType").textContent=labels[test];$("quizTitle").textContent=titles[test];$("quizEyebrow").textContent="QUESTION 01 OF 30";
-    $("timerPill").classList.toggle("hidden",test==="personality");
+    state.answers={};state.index=0;state.started=Date.now();state.seconds=0;state.duration=durationOf(test);
+    $("quizType").textContent=labels[test];$("quizEyebrow").textContent=`QUESTION 01 OF ${PER_TEST}`;
+    $("timerPill").classList.toggle("hidden",!TIMED[test]);
     clearInterval(state.timer);
-    if(test!=="personality"){updateTimer();state.timer=setInterval(()=>{state.seconds++;updateTimer();if(state.seconds>=state.duration){clearInterval(state.timer);toast("Time is up. Submitting your test.");finish()}},1000)}
+    if(TIMED[test]){updateTimer();state.timer=setInterval(()=>{state.seconds++;updateTimer();if(state.seconds>=state.duration){clearInterval(state.timer);toast("Time is up. Submitting your test.");finish()}},1000)}
     show("quizShell");renderQuestion();
   }
   function updateTimer(){const left=Math.max(0,state.duration-state.seconds);$("timerText").textContent=String(Math.floor(left/60)).padStart(2,"0")+":"+String(left%60).padStart(2,"0")}
   function renderQuestion(){
     const q=state.questions[state.index],answered=Object.keys(state.answers).length;
-    $("quizEyebrow").textContent=`QUESTION ${String(state.index+1).padStart(2,"0")} OF 30`;
-    $("questionType").textContent=q.category||intros[state.test];
+    $("quizEyebrow").textContent=`QUESTION ${String(state.index+1).padStart(2,"0")} OF ${String(PER_TEST).padStart(2,"0")}`;
     $("questionText").textContent=q.question;
     const visual=$("questionVisual");visual.innerHTML="";
     if(q.visual){visual.innerHTML=q.visual}
     $("options").innerHTML=q.options.map((o,i)=>`<button class="option ${state.answers[state.index]===i?"selected":""}" data-option="${i}"><span class="option-letter">${String.fromCharCode(65+i)}</span><span>${escapeHtml(o)}</span></button>`).join("");
     $("options").querySelectorAll(".option").forEach(b=>b.addEventListener("click",()=>{state.answers[state.index]=Number(b.dataset.option);renderQuestion()}));
     $("prevQuestion").disabled=state.index===0;$("prevQuestion").style.opacity=state.index===0?".4":"1";
-    $("nextQuestion").innerHTML=state.index===29?'Review & submit <span>→</span>':'Next question <span>→</span>';
-    $("progressFill").style.width=((state.index+1)/30*100)+"%";
-    $("answeredCount").textContent=answered;$("miniProgressFill").style.width=(answered/30*100)+"%";
-    $("unansweredText").textContent=(30-answered)+" questions remaining";
-    $("questionMap").innerHTML=state.questions.map((_,i)=>`<button class="map-dot ${i===state.index?"current":""} ${state.answers[i]!==undefined?"done":""}" data-jump="${i}">${i+1}</button>`).join("");
-    $("questionMap").querySelectorAll("button").forEach(b=>b.addEventListener("click",()=>{state.index=Number(b.dataset.jump);renderQuestion()}));
+    $("nextQuestion").innerHTML=state.index===PER_TEST-1?'Submit test <span>↗</span>':'Next <span>→</span>';
+    $("progressFill").style.width=(answered/PER_TEST*100)+"%";
   }
+  // "All questions" popup: question map + submit
+  function renderMap(){
+    $("answeredCount").textContent=Object.keys(state.answers).length;
+    $("questionMap").innerHTML=state.questions.map((_,i)=>`<button class="map-dot ${i===state.index?"current":""} ${state.answers[i]!==undefined?"done":""}" data-jump="${i}">${i+1}</button>`).join("");
+  }
+  const openMap=()=>{renderMap();$("mapModal").classList.remove("hidden")};
+  const closeMap=()=>$("mapModal").classList.add("hidden");
+  $("openMap").addEventListener("click",openMap);
+  $("closeMap").addEventListener("click",closeMap);
+  $("mapModal").addEventListener("click",e=>{if(e.target.id==="mapModal")closeMap()});
+  document.addEventListener("keydown",e=>{if(e.key==="Escape")closeMap()});
+  $("questionMap").addEventListener("click",e=>{const b=e.target.closest("[data-jump]");if(!b)return;state.index=Number(b.dataset.jump);closeMap();renderQuestion()});
+  const submit=()=>{const missing=PER_TEST-Object.keys(state.answers).length;if(missing&&!confirm(`You have ${missing} unanswered question(s). Submit anyway?`))return;closeMap();finish()};
   $("prevQuestion").addEventListener("click",()=>{if(state.index>0){state.index--;renderQuestion()}});
-  $("nextQuestion").addEventListener("click",()=>{if(state.index<29){state.index++;renderQuestion()}else{const missing=30-Object.keys(state.answers).length;if(missing)toast(`${missing} question(s) are unanswered. You can still submit.`);$("submitQuiz").focus()}});
-  $("submitQuiz").addEventListener("click",()=>{const missing=30-Object.keys(state.answers).length;if(missing&&!confirm(`You have ${missing} unanswered question(s). Submit anyway?`))return;finish()});
-  const quit=e=>{e.preventDefault();if(confirm("Exit this test? Your current attempt will be lost.")){clearInterval(state.timer);show("homeView")}};
+  $("nextQuestion").addEventListener("click",()=>{if(state.index<PER_TEST-1){state.index++;renderQuestion()}else submit()});
+  $("submitQuiz").addEventListener("click",submit);
+  const quit=e=>{e.preventDefault();if(confirm("Exit this test? Your current attempt will be lost.")){clearInterval(state.timer);closeMap();show("homeView")}};
   $("quitQuiz").addEventListener("click",quit);$("quizHome").addEventListener("click",quit);
   function finish(){
+    closeMap();
     clearInterval(state.timer);
-    const isP=state.test==="personality",total=30,answered=Object.keys(state.answers).length;
+    const isP=state.test==="personality",total=PER_TEST,answered=Object.keys(state.answers).length;
     let correct=0;state.questions.forEach((q,i)=>{if(!isP&&state.answers[i]===q.answer)correct++});
     const pct=Math.round((isP?answered/total:correct/total)*100);
     const elapsed=Math.floor((Date.now()-state.started)/1000),mm=String(Math.floor(elapsed/60)).padStart(2,"0"),ss=String(elapsed%60).padStart(2,"0");
     $("resultTitle").textContent=isP?"A little more insight into you.":pct>=80?"Brilliant effort!":pct>=60?"Nicely done.":"Every challenge is a chance to grow.";
     $("resultSubtitle").textContent=isP?"Your answers create a snapshot of your preferences.":`You completed the ${labels[state.test].toLowerCase()} challenge. Here's your result.`;
-    $("scoreLabel").textContent=isP?"COMPLETION":"YOUR SCORE";$("scoreValue").textContent=isP?answered:correct;$("scoreSuffix").textContent=isP?"/30":"/30";
+    $("scoreLabel").textContent=isP?"COMPLETION":"YOUR SCORE";$("scoreValue").textContent=isP?answered:correct;$("scoreSuffix").textContent="/"+PER_TEST;
     $("scoreRing").style.setProperty("--score",pct+"%");
     $("scoreCaption").textContent=isP?"Your response snapshot":pct>=80?"Excellent work":pct>=60?"Good progress":"Keep exploring";
     $("scoreDescription").textContent=isP?"Your profile reflects preferences, not a fixed label.":`${pct}% correct. Review the answers to learn a little more.`;
-    $("correctStat").textContent=isP?"—":correct;$("wrongStat").textContent=isP?"—":answered-correct;$("timeStat").textContent=mm+":"+ss;$("answeredStat").textContent=answered+"/30";
+    $("correctStat").textContent=isP?"—":correct;$("wrongStat").textContent=isP?"—":answered-correct;$("timeStat").textContent=mm+":"+ss;$("answeredStat").textContent=answered+"/"+PER_TEST;
     $("personalityResult").classList.toggle("hidden",!isP);
     if(isP)renderPersonality();
     $("reviewHeading");renderReview();show("resultShell");
@@ -102,5 +114,7 @@
   if(localStorage.getItem("mindarena_theme")==="light")document.body.classList.add("light");
   $("shareBtn").addEventListener("click",async()=>{const text=`I just completed a ${labels[state.test]} on MindArena! Try a challenge and discover something new.`;try{if(navigator.share)await navigator.share({title:"My MindArena result",text});else if(navigator.clipboard){await navigator.clipboard.writeText(text);toast("Share text copied to clipboard.")}else toast(text)}catch(e){}});
   document.querySelectorAll("[data-test]").forEach(b=>b.addEventListener("click",()=>start(b.dataset.test)));
+  document.querySelectorAll("[data-time]").forEach(el=>el.textContent="◷ "+minutesLabel(durationOf(el.dataset.time)));
+  document.querySelectorAll(".q-count").forEach(el=>el.textContent=PER_TEST);
   $("year").textContent=new Date().getFullYear();
 })();

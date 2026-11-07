@@ -13,11 +13,11 @@ No backend, package installation, or build step is required. Google Fonts are lo
 ## Included
 - 60 IQ-style reasoning questions and 60 General Knowledge questions. Each attempt draws a random 30 and shuffles their order and the A–D options.
 - 60 personality reflection questions (15 per trait). Each attempt draws 7–8 per trait so the four-dimension snapshot stays balanced.
-- Four options per question, question map, previous/next navigation, progress, timer for IQ/GK, answer review, retake and share.
+- Four options per question, question map, previous/next navigation, progress, timer for IQ/GK (20 seconds per question, 10 minutes total), answer review, retake and share.
 - Dark/light theme toggle and responsive mobile layout.
 - Recent attempt summaries saved locally in browser storage.
 
 ## Notes
 - The IQ section is an informal reasoning quiz, not a clinically or psychometrically validated IQ assessment.
 - Personality output is a lightweight reflection snapshot, not a psychological diagnosis or validated personality instrument.
-- Questions are stored in `js/questions.js`. Add questions using the same object shape and keep at least 30 in each category. The more you add, the more each attempt varies. For personality, add a similar number to each `dimension`.
+- Questions are stored in `js/questions.js`. Add questions using the same object shape and keep at least as many as `PER_TEST` (30) in each category. The question count and time per question are set at the top of `js/app.js` (`PER_TEST`, `SECONDS_PER_QUESTION`); the total time is calculated from them. The more you add, the more each attempt varies. For personality, add a similar number to each `dimension`.
