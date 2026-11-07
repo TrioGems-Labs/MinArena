@@ -2,9 +2,9 @@
   const $ = id => document.getElementById(id);
   const state = { test:null, questions:[], answers:{}, index:0, started:0, timer:null, seconds:0, duration:0 };
   const labels = {iq:"IQ & BRAIN TEST", personality:"PERSONALITY TEST", gk:"GENERAL KNOWLEDGE"};
-  const PER_TEST = 30; // questions per test
+  const PER_TEST = 20; // questions per test
   // Time allowed per question; total time = PER_TEST × this. Personality is untimed; its value is only the estimate shown on the card.
-  const SECONDS_PER_QUESTION = {iq:20, gk:20, personality:20}; // 30 × 20s = 10 min
+  const SECONDS_PER_QUESTION = {iq:30, gk:30, personality:30}; // 20 × 30s = 10 min
   const TIMED = {iq:true, gk:true, personality:false};
   const durationOf = test => PER_TEST*SECONDS_PER_QUESTION[test];
   const minutesLabel = sec => { const m=sec/60; return (Number.isInteger(m)?m:m.toFixed(1))+" min"; };
